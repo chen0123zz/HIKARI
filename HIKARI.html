@@ -11,95 +11,100 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
+        /* ========================================= */
+        /* 🎨 基礎樣式修復 (不跑版關鍵) */
+        /* ========================================= */
         :root {
             --brand-color: #efb748;
             --bg-beige: #f9f5f0;
             --text-dark: #333333;
             --white: #ffffff;
-            --admin-bg: #f0f2f5;
         }
-
         html { scroll-behavior: smooth; }
         body { font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 0; background-color: var(--bg-beige); color: var(--text-dark); overflow-x: hidden; }
 
-        /* --- 🌑 高級感進入頁 --- */
+        /* --- 🌑 高級進入頁 (Splash) --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: opacity 1s ease, visibility 1s;
+            cursor: pointer; transition: opacity 0.8s ease, visibility 0.8s;
         }
         .splash-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('images/hero_bg.jpg'); background-size: cover; background-position: center; z-index: -2; }
         .splash-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: -1; }
         .splash-content { text-align: center; color: #fff; }
-        .splash-logo { height: 80px; margin-bottom: 20px; filter: brightness(0) invert(1); }
-        .splash-title { font-size: 2.5rem; letter-spacing: 12px; font-weight: 300; margin: 0; }
-        .click-hint { margin-top: 60px; font-size: 0.9rem; letter-spacing: 3px; animation: blink 2s infinite; opacity: 0.7; }
+        .splash-logo { height: 70px; margin-bottom: 20px; filter: brightness(0) invert(1); }
+        .splash-title { font-size: 2.2rem; letter-spacing: 10px; font-weight: 300; margin: 0; }
+        .click-hint { margin-top: 50px; font-size: 0.8rem; letter-spacing: 2px; animation: blink 2s infinite; }
         @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         .hide-splash { opacity: 0; visibility: hidden; pointer-events: none; }
 
-        /* --- 📱 導覽列 & 側邊選單 --- */
-        header { background-color: rgba(255, 255, 255, 0.95); padding: 15px 20px; box-shadow: 0 2px 15px rgba(0,0,0,0.05); position: fixed; top: 0; width: 100%; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; backdrop-filter: blur(10px); }
-        .logo-img { height: 45px; cursor: pointer; }
-        .menu-btn { font-size: 1.2rem; cursor: pointer; color: var(--brand-color); font-weight: bold; border: 2px solid var(--brand-color); padding: 5px 15px; border-radius: 20px; transition: 0.3s; }
-        .menu-btn:hover { background: var(--brand-color); color: #fff; }
+        /* --- 📱 導覽列 & 側邊抽屜 --- */
+        header { 
+            background-color: var(--white); padding: 15px 20px; box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
+        }
+        .logo-img { height: 40px; cursor: pointer; }
+        .menu-btn { font-size: 1.2rem; cursor: pointer; color: var(--brand-color); font-weight: bold; padding: 5px 10px; }
 
-        .side-menu { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: var(--white); z-index: 2000; box-shadow: -5px 0 30px rgba(0,0,0,0.15); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; padding: 80px 30px; box-sizing: border-box; }
+        .side-menu {
+            position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
+            background: var(--white); z-index: 2000; box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; padding: 80px 30px; box-sizing: border-box;
+        }
         .side-menu.open { right: 0; }
-        .side-menu a { text-decoration: none; color: var(--text-dark); padding: 20px 0; border-bottom: 1px solid #f5f5f5; font-weight: 500; font-size: 1.1rem; transition: 0.3s; }
-        .side-menu a:hover { color: var(--brand-color); transform: translateX(5px); }
-        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; backdrop-filter: blur(4px); }
+        .side-menu a { text-decoration: none; color: var(--text-dark); padding: 18px 0; border-bottom: 1px solid #f9f9f9; font-weight: 500; }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1500; display: none; }
 
-        /* --- 📄 豐富化區塊排版 --- */
-        section { padding: 80px 20px; max-width: 1000px; margin: 0 auto; scroll-margin-top: 80px; }
-        .section-title { color: var(--brand-color); font-size: 2.2rem; margin-bottom: 15px; text-align: center; font-weight: 700; }
-        .section-desc { color: #666; margin-bottom: 50px; text-align: center; line-height: 1.8; }
-        
-        /* 圖卡 Swiper */
+        /* ========================================= */
+        /* 📄 內容排版 (完美還原妳的圖卡樣式) */
+        /* ========================================= */
+        section { padding: 80px 20px; max-width: 1000px; margin: 0 auto; scroll-margin-top: 80px; text-align: center; }
+        .section-title { color: var(--brand-color); font-size: 1.8rem; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .section-desc { color: #666; margin-bottom: 40px; }
+
+        /* Swiper 通用 */
         .swiper { width: 100%; padding-bottom: 50px; }
-        .slide-img { width: 100%; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .slide-img { width: 100%; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
-        /* 優惠卡片 */
-        .offer-card { background: #fff; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.06); display: flex; text-align: left; }
-        .offer-img { flex: 1.2; padding: 20px; display: flex; align-items: center; }
-        .offer-info { flex: 1; padding: 40px; background: #fffaf5; display: flex; flex-direction: column; justify-content: center; }
-        .tag { background: #ff4757; color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: bold; margin-bottom: 15px; width: fit-content; }
+        /* 最新優惠卡片 */
+        .offer-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; text-align: left; }
+        .offer-img { flex: 1.2; padding: 15px; }
+        .offer-info { flex: 1; padding: 30px; display: flex; flex-direction: column; justify-content: center; }
+        .btn-reserve { display: inline-block; background: var(--brand-color); color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; margin-top: 15px; text-align: center; }
 
-        /* 服務與包堂 */
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .card { background: #fff; border-radius: 20px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f0f0f0; }
-        .price-row { display: flex; justify-content: space-between; margin-top: 15px; font-size: 1.1rem; }
-        .price-row strong { color: var(--brand-color); font-size: 1.3rem; }
-        .table-box { overflow-x: auto; margin-top: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; background: #fff; min-width: 600px; }
-        th { background: var(--brand-color); color: #fff; padding: 20px; text-align: center; }
-        td { padding: 18px; border: 1px solid #f0f0f0; text-align: center; }
+        /* 服務價目表 */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: #fff; border-radius: 15px; padding: 30px; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .price-row { display: flex; justify-content: space-between; margin-top: 10px; font-weight: bold; }
+        .price-row strong { color: var(--brand-color); }
 
-        /* --- 💖 好評不間斷跑馬燈 (20張) --- */
-        .marquee-container { width: 100vw; margin-left: calc(-50vw + 50%); overflow: hidden; padding: 40px 0; background: #fffbf5; }
-        .marquee-track { display: flex; gap: 20px; width: max-content; animation: marquee 60s linear infinite; }
-        .marquee-track:hover { animation-play-state: paused; }
-        .marquee-item { width: 280px; flex-shrink: 0; }
-        .marquee-item img { width: 100%; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 1px solid #eee; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        /* 好評跑馬燈 */
+        .marquee-container { width: 100vw; margin-left: calc(-50vw + 50%); overflow: hidden; background: #fff; padding: 40px 0; }
+        .marquee-track { display: flex; gap: 15px; width: max-content; animation: scrollMarquee 80s linear infinite; }
+        .marquee-item { width: 250px; flex-shrink: 0; }
+        .marquee-item img { width: 100%; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* 日曆與按鈕 */
-        .booking-card { background: #fff; padding: 40px; border-radius: 25px; box-shadow: 0 15px 50px rgba(0,0,0,0.05); }
-        .cal-day { height: 80px; border: 1px solid #eee; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
-        .cal-day.active { background: var(--brand-color); color: #fff; box-shadow: 0 8px 15px rgba(239, 183, 72, 0.3); }
-        .btn-reserve { display: block; width: 100%; padding: 18px; background: var(--brand-color); color: #fff; border: none; border-radius: 40px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 30px; box-shadow: 0 10px 20px rgba(239, 183, 72, 0.2); }
+        /* 日曆與表單 */
+        .booking-box { background: #fff; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
+        .cal-day { height: 60px; border: 1px solid #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .cal-day.active { background: var(--brand-color); color: #fff; border-color: var(--brand-color); }
 
-        /* --- 🔒 後台樣式 --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--admin-bg); z-index: 10000; overflow-y: auto; }
-        .admin-header { background: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
+        /* 聯絡我們 */
+        .contact-box { background: #333; color: #fff; border-radius: 25px; padding: 40px; display: flex; gap: 30px; text-align: left; }
+        .map-frame { flex: 1; height: 250px; border-radius: 15px; overflow: hidden; }
 
         @media (max-width: 768px) {
-            .offer-card { flex-direction: column; }
-            .section-title { font-size: 1.8rem; }
+            .offer-card, .contact-box { flex-direction: column; display: block; }
+            .map-frame { margin-top: 20px; width: 100%; }
+            .services-grid { grid-template-columns: 1fr; }
             .side-menu { width: 280px; }
-            .marquee-item { width: 220px; }
+            .marquee-item { width: 200px; }
         }
     </style>
 </head>
@@ -111,42 +116,40 @@
         <div class="splash-content">
             <img src="images/logo.png" class="splash-logo">
             <h1 class="splash-title">躺平運動按摩</h1>
-            <div class="click-hint">EXPLORE COMFORT</div>
+            <div class="click-hint">CLICK TO ENTER</div>
         </div>
     </div>
 
     <header>
-        <img src="images/logo.png" alt="LOGO" class="logo-img" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-        <div class="menu-btn" onclick="toggleMenu(true)">選單 MENU</div>
+        <img src="images/logo.png" alt="TANG PING" class="logo-img" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <div class="menu-btn" onclick="toggleMenu(true)">三 選單</div>
     </header>
 
     <div class="menu-overlay" id="overlay" onclick="toggleMenu(false)"></div>
     <div class="side-menu" id="sideMenu">
-        <div style="text-align:right; font-size:2.5rem; cursor:pointer; color:#eee; margin-bottom:10px;" onclick="toggleMenu(false)">×</div>
-        <a href="#news" onclick="toggleMenu(false)">最新優惠活動</a>
+        <div style="text-align:right; font-size:2rem; cursor:pointer; color:#ccc; margin-bottom:20px;" onclick="toggleMenu(false)">×</div>
+        <a href="#news" onclick="toggleMenu(false)">最新活動 & 獨家優惠</a>
         <a href="#about" onclick="toggleMenu(false)">關於運動按摩</a>
-        <a href="#services" onclick="toggleMenu(false)">服務項目與價目</a>
+        <a href="#services" onclick="toggleMenu(false)">服務項目 & 價目表</a>
         <a href="#feedback" onclick="toggleMenu(false)">客人好評見證</a>
         <a href="#notice" onclick="toggleMenu(false)">預約須知 & QA</a>
         <a href="#booking" onclick="toggleMenu(false)">立即線上預約</a>
-        <a href="#contact" onclick="toggleMenu(false)">門市地點資訊</a>
-        <a href="javascript:void(0)" onclick="openAdmin()" style="margin-top:auto; font-size:0.8rem; color:#ccc; border:none;">管理後台登入</a>
+        <a href="#contact" onclick="toggleMenu(false)">聯絡我們資訊</a>
     </div>
 
     <main>
         <section id="news">
-            <h2 class="section-title">🎉 最新活動 & 獨家優惠</h2>
-            <p class="section-desc">釋放壓力的同時，也能享有我們精心準備的禮遇。</p>
+            <h2 class="section-title">🥳 最新活動 & 獨家優惠</h2>
             <div class="swiper offerSwiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="offer-card">
                             <div class="offer-img"><img src="images/當月壽星優惠.png" style="width:100%;"></div>
                             <div class="offer-info">
-                                <span class="tag">BIRTHDAY 🎂</span>
+                                <div style="background:#ff4757; color:#fff; width:fit-content; padding:4px 12px; border-radius:20px; font-size:0.8rem; margin-bottom:10px;">壽星限定</div>
                                 <h3>當月壽星折抵 $200</h3>
-                                <p>生日值得被好好慶祝！卸下整年的疲憊。</p>
-                                <a href="#booking" class="btn-main" style="width:fit-content;">立即預約生日禮</a>
+                                <p>生日值得被慶祝！送給身心一份放鬆禮物。</p>
+                                <a href="#booking" class="btn-reserve">立即預約</a>
                             </div>
                         </div>
                     </div>
@@ -154,9 +157,9 @@
                         <div class="offer-card">
                             <div class="offer-img"><img src="images/學生優惠.png" style="width:100%;"></div>
                             <div class="offer-info">
-                                <span class="tag" style="background:#e67e22;">STUDENT 🎓</span>
+                                <div style="background:#e67e22; color:#fff; width:fit-content; padding:4px 12px; border-radius:20px; font-size:0.8rem; margin-bottom:10px;">學生專屬</div>
                                 <h3>憑學生證折抵 $200</h3>
-                                <p>不論是操場揮汗還是考場拼搏，重整身心補好能量。</p>
+                                <p>放鬆肌肉與壓力，補好能量再出發！</p>
                             </div>
                         </div>
                     </div>
@@ -164,9 +167,9 @@
                         <div class="offer-card">
                             <div class="offer-img"><img src="images/包堂優惠方案.png" style="width:100%;"></div>
                             <div class="offer-info">
-                                <span class="tag" style="background:#d35400;">BEST VALUE 🔥</span>
-                                <h3>包堂優惠更划算</h3>
-                                <p>定期保養身體，享受更高額度的折扣。</p>
+                                <div style="background:#d35400; color:#fff; width:fit-content; padding:4px 12px; border-radius:20px; font-size:0.8rem; margin-bottom:10px;">最划算</div>
+                                <h3>包堂優惠更省錢</h3>
+                                <p>定期保養身體的最佳選擇。</p>
                             </div>
                         </div>
                     </div>
@@ -175,10 +178,10 @@
             </div>
         </section>
 
-        <section id="about" style="background:#fffaf0; width:100vw; margin-left: calc(-50vw + 50%); padding: 80px 0;">
+        <section id="about" style="background:#fff; width:100vw; margin-left: calc(-50vw + 50%);">
             <div style="max-width:1000px; margin:0 auto; padding:0 20px;">
                 <h2 class="section-title">🧘 關於運動按摩</h2>
-                <p class="section-desc">不只是按摩，更是一場肌肉的修復工程。</p>
+                <p class="section-desc">左右滑動，了解我們如何幫助您的身體 👋</p>
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide"><img src="images/按摩效果.png" class="slide-img"></div>
@@ -197,143 +200,141 @@
         </section>
 
         <section id="services">
-            <h2 class="section-title">💰 服務項目價目表</h2>
+            <h2 class="section-title">💰 服務項目 & 價目表</h2>
             <div class="services-grid">
                 <div class="card">
-                    <h3 style="color:var(--brand-color); border-bottom:2px solid #f9f5f0; padding-bottom:10px;">專業運動按摩</h3>
-                    <p style="color:#888; font-size:0.9rem;">美式深壓 / PNF 伸展 / 釋放緊繃。</p>
-                    <div class="price-row"><span>基礎 (60min)</span><strong>$ 1,200</strong></div>
-                    <div class="price-row"><span>大樂 (90min)</span><strong>$ 1,800</strong></div>
+                    <h3 style="color:var(--brand-color);">專業運動按摩</h3>
+                    <p style="color:#888;">美式深壓、PNF 伸展，釋放深層肌肉緊繃。</p>
+                    <div class="price-row"><span>60分鐘</span><strong>$ 1,200</strong></div>
+                    <div class="price-row"><span>90分鐘</span><strong>$ 1,800</strong></div>
                 </div>
                 <div class="card">
-                    <h3 style="color:var(--brand-color); border-bottom:2px solid #f9f5f0; padding-bottom:10px;">張力調整輔助</h3>
-                    <p style="color:#888; font-size:0.9rem;">筋膜刀 / 拔罐 / 沾黏改善。</p>
-                    <div class="price-row"><span>基礎 (60min)</span><strong>$ 1,400</strong></div>
-                    <div class="price-row"><span>大樂 (90min)</span><strong>$ 2,000</strong></div>
+                    <h3 style="color:var(--brand-color);">張力調整輔助</h3>
+                    <p style="color:#888;">結合筋膜刀、拔罐，改善沾黏提升活動度。</p>
+                    <div class="price-row"><span>60分鐘</span><strong>$ 1,400</strong></div>
+                    <div class="price-row"><span>90分鐘</span><strong>$ 2,000</strong></div>
                 </div>
             </div>
             
-            <h2 class="section-title" style="margin-top:80px; font-size:1.6rem;">👑 包堂優惠方案 (最划算)</h2>
-            <div class="table-box">
-                <table>
-                    <tr><th>項目</th><th>單堂</th><th>包五堂 (省$500)</th><th>包十堂 (省$2000)</th></tr>
+            <h2 class="section-title" style="margin-top:60px;">🏆 包堂優惠方案</h2>
+            <div class="table-box" style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; background:#fff; border-radius:15px; overflow:hidden;">
+                    <tr style="background:var(--brand-color); color:#fff;"><th>項目</th><th>單堂</th><th>包五堂</th><th>包十堂</th></tr>
                     <tr><td>專業運動按摩</td><td>$1,200</td><td>$5,500</td><td style="color:#d35400; font-weight:bold;">$10,000</td></tr>
-                    <tr><td>張力調整輔助</td><td>$1,400</td><td>$6,500</td><td style="color:#d35400; font-weight:bold;">$12,000</td></tr>
+                    <tr><td>張力調整</td><td>$1,400</td><td>$6,500</td><td style="color:#d35400; font-weight:bold;">$12,000</td></tr>
                 </table>
             </div>
-            <p style="text-align:right; font-size:0.85rem; color:#999; margin-top:15px;">※ 包堂加時每 30 分鐘以 500 元計。</p>
         </section>
 
-        <section id="feedback" style="padding-bottom:0;">
-            <h2 class="section-title">✨ 超過 500+ 真實好評</h2>
-            <p class="section-desc">沒有誇大的廣告，只有體驗過後的真實感動。</p>
+        <section id="feedback">
+            <h2 class="section-title">✨ 客人好評推薦</h2>
+            <p class="section-desc">收集大家的放鬆時刻，真實回饋最動人 😇</p>
             <div class="marquee-container">
-                <div class="marquee-track" id="feedback-track">
+                <div class="marquee-track" id="marquee-inner">
                     </div>
             </div>
         </section>
 
         <section id="notice">
             <h2 class="section-title">⚠️ 預約須知</h2>
-            <div class="services-grid" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));">
-                <div class="card" style="padding:25px;"><h4>🎽 穿著建議</h4><p style="font-size:0.9rem;">請著運動服飾，方便大範圍伸展放鬆。</p></div>
-                <div class="card" style="padding:25px;"><h4>🍱 飲食建議</h4><p style="font-size:0.9rem;">按摩前一小時切勿飽腹，以免不適。</p></div>
-                <div class="card" style="padding:25px;"><h4>💪 心理準備</h4><p style="font-size:0.9rem;">針對沾黏處處理偶有痠痛，屬正常現象。</p></div>
-                <div class="card" style="padding:25px;"><h4>🤕 主動告知</h4><p style="font-size:0.9rem;">若有舊疾、懷孕等狀況請務必提前告知。</p></div>
+            <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <div class="card" style="padding:20px; border-top:4px solid var(--brand-color);">
+                    <h4 style="margin:0 0 10px;">👕 穿著建議</h4>
+                    <p style="font-size:0.9rem;">請著運動服或輕便休閒服以便活動。</p>
+                </div>
+                <div class="card" style="padding:20px; border-top:4px solid var(--brand-color);">
+                    <h4 style="margin:0 0 10px;">🍱 飲食建議</h4>
+                    <p style="font-size:0.9rem;">按摩前一小時切勿飽腹，以免不適。</p>
+                </div>
+                <div class="card" style="padding:20px; border-top:4px solid var(--brand-color);">
+                    <h4 style="margin:0 0 10px;">💪 心理準備</h4>
+                    <p style="font-size:0.9rem;">處理沾黏處偶有正常痠痛感，屬修復反應。</p>
+                </div>
+                <div class="card" style="padding:20px; border-top:4px solid var(--brand-color);">
+                    <h4 style="margin:0 0 10px;">🤕 主動告知</h4>
+                    <p style="font-size:0.9rem;">若有舊疾或身體不適請務必主動告知。</p>
+                </div>
             </div>
 
-            <h2 class="section-title" style="margin-top:80px;">💡 身體小知識 QA</h2>
-            <div class="services-grid">
-                <div class="card" style="border-left:5px solid var(--brand-color);">
-                    <h4 style="margin:0; color:#5e4b35;">Q: 運動按摩後隔天痠痛正常嗎？</h4>
-                    <p style="margin-top:10px; font-size:0.95rem;">正常！這是 DOMS 延遲性肌肉痠痛，是深層修復的過程喔！</p>
-                </div>
-                <div class="card" style="border-left:5px solid #d35400;">
-                    <h4 style="margin:0; color:#5e4b35;">Q: 該如何緩解痠痛感？</h4>
-                    <p style="margin-top:10px; font-size:0.95rem;">多補充水分協助代謝、熱敷、或是進行散步等輕微活動。</p>
-                </div>
+            <h2 class="section-title" style="margin-top:60px;">💡 身體小知識 QA</h2>
+            <div class="card" style="text-align:left; margin-bottom:15px;">
+                <strong style="color:var(--brand-color);">Q: 按摩後隔天痠痛正常嗎？</strong>
+                <p>A: 正常的喔！這是 DOMS 延遲性肌肉痠痛，是深層按摩後的修復信號，多喝水休息即可。</p>
             </div>
         </section>
 
         <section id="booking">
-            <h2 class="section-title">📅 線上預約時段</h2>
-            <div class="booking-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <button class="menu-btn" onclick="prevMonth()">❮ 上個月</button>
-                    <h3 id="currentMonthYear" style="margin:0;"></h3>
-                    <button class="menu-btn" onclick="nextMonth()">下個月 ❯</button>
+            <h2 class="section-title">📅 線上預約</h2>
+            <div class="booking-box">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <button class="btn-main" onclick="prevMonth()">❮</button>
+                    <h3 id="currentMonthYear"></h3>
+                    <button class="btn-main" onclick="nextMonth()">❯</button>
                 </div>
                 <div class="calendar-grid" id="calendar-grid-front"></div>
-                <div id="time-selection-area" style="display:none; margin-top:40px; border-top:2px solid #f9f5f0; padding-top:30px;">
-                    <h3 style="margin-bottom:20px;">選擇時間：<span id="selected-date-display" style="color:var(--brand-color);"></span></h3>
-                    <div class="time-grid" id="time-grid"></div>
-                    <button class="btn-reserve" onclick="openBookingForm()">確認並填寫資料</button>
+                <div id="time-selection-area" style="display:none; margin-top:30px; border-top:1px solid #eee; padding-top:20px;">
+                    <h3>選擇時段：<span id="selected-date-display" style="color:var(--brand-color);"></span></h3>
+                    <div id="time-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:15px;"></div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" style="background:#333; color:#fff; width:100vw; margin-left:calc(-50vw + 50%); padding: 80px 0;">
+        <section id="contact" style="background:#f9f5f0; width:100vw; margin-left: calc(-50vw + 50%); padding: 80px 0;">
             <div style="max-width:1000px; margin:0 auto; padding:0 20px;">
-                <h2 class="section-title" style="color:var(--brand-color);">📍 聯絡我們</h2>
-                <div class="contact-container">
-                    <div style="line-height:2.5;">
-                        <p>🏠 <b>門市地址：</b>新北市蘆洲區三民路128巷68號</p>
-                        <p>💬 <b>官方 LINE：</b>@tangping</p>
+                <h2 class="section-title">📍 聯絡我們</h2>
+                <div class="contact-box">
+                    <div style="flex:1;">
+                        <p>🏠 <b>店址：</b>新北市蘆洲區三民路128巷68號</p>
+                        <p>📞 <b>LINE：</b>@tangping</p>
                         <p>📷 <b>Instagram：</b>tangping_68</p>
-                        <p>🕒 <b>開放時間：</b>10:00 - 22:00 (預約制)</p>
-                        <a href="https://line.me/R/ti/p/@tangping" class="btn-reserve" style="background:#00B900; text-decoration:none; text-align:center;">直接打開 LINE 諮詢</a>
+                        <p>🕒 <b>時間：</b>10:00 - 22:00 (預約制)</p>
+                        <a href="https://line.me/R/ti/p/@tangping" class="btn-reserve" style="background:#00B900; width:100%;">打開 LINE 諮詢預約</a>
                     </div>
-                    <div class="map-box">
-                        <iframe width="100%" height="100%" frameborder="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.370022826966!2d121.46770401095526!3d25.08933283596854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a90055f62f55%3A0x9cc567681495fd17!2z6Lq65bmz6YGL5YuV5oyJ5pGp!5e0!3m2!1szh-TW!2stw!4v1765006184538!5m2!1szh-TW!2stw"></iframe>
+                    <div class="map-frame">
+                        <iframe width="100%" height="100%" frameborder="0" src="http://googleusercontent.com/maps.google.com/2"></iframe>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="admin-panel"> </div>
-
     <script>
         let currentDate = new Date();
         const timeSlots = ['10:00', '12:00', '14:00', '15:40', '17:10', '19:30', '21:10'];
 
-        // --- 啟動與選單 ---
+        // 啟動功能
         function enterSite() {
             document.getElementById('splash-screen').classList.add('hide-splash');
             document.body.style.overflow = 'auto';
             initSwipers();
-            generateMarquee();
+            initMarquee();
         }
 
+        // 選單功能
         function toggleMenu(isOpen) {
             const menu = document.getElementById('sideMenu');
             const overlay = document.getElementById('overlay');
-            if (isOpen) { menu.classList.add('open'); overlay.style.display = 'block'; document.body.style.overflow = 'hidden'; }
-            else { menu.classList.remove('open'); overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }
+            if (isOpen) { menu.classList.add('open'); overlay.style.display = 'block'; }
+            else { menu.classList.remove('open'); overlay.style.display = 'none'; }
         }
 
-        // --- 生成 20 張好評跑馬燈 ---
-        function generateMarquee() {
-            const track = document.getElementById('feedback-track');
-            let images = "";
+        // 初始化跑馬燈 (20張)
+        function initMarquee() {
+            const track = document.getElementById('marquee-inner');
+            let content = "";
             for(let i=1; i<=20; i++) {
-                images += `<div class="marquee-item"><img src="images/好評${i}.png" alt="好評${i}"></div>`;
+                content += `<div class="marquee-item"><img src="images/好評${i}.png"></div>`;
             }
-            // 複製一份達成無縫捲動
-            track.innerHTML = images + images;
+            track.innerHTML = content + content; // 複製一份達成無縫
         }
 
-        // --- 初始化 Swiper ---
+        // 初始化 Swiper
         function initSwipers() {
             new Swiper(".offerSwiper", { loop: true, autoplay: { delay: 4000 }, pagination: { el: ".swiper-pagination" } });
-            new Swiper(".mySwiper", { 
-                slidesPerView: 1, spaceBetween: 20, 
-                breakpoints: { 768: { slidesPerView: 3 } }, 
-                pagination: { el: ".swiper-pagination" } 
-            });
+            new Swiper(".mySwiper", { slidesPerView: 1, spaceBetween: 20, breakpoints: { 768: { slidesPerView: 3 } }, pagination: { el: ".swiper-pagination" } });
         }
 
-        // --- 日曆邏輯 (保留 V25) ---
+        // 日曆邏輯
         function renderCalendar() {
             const y = currentDate.getFullYear();
             const m = currentDate.getMonth();
@@ -349,33 +350,19 @@
                     document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('active'));
                     this.classList.add('active');
                     document.getElementById('time-selection-area').style.display = 'block';
-                    document.getElementById('selected-date-display').innerText = `${m+1}/${i}`;
-                    renderTimes();
+                    document.getElementById('selected-date-display').innerText = `${m+1}月${i}日`;
+                    const tGrid = document.getElementById('time-grid');
+                    tGrid.innerHTML = "";
+                    timeSlots.forEach(t => { tGrid.innerHTML += `<button style="padding:10px; border:1px solid #efb748; background:#fff; color:#efb748; border-radius:5px; font-weight:bold; cursor:pointer;" onclick="Swal.fire('預約確認','您選擇的時間是 '+t,'info')">${t}</button>`; });
                 }
                 grid.appendChild(cell);
             }
         }
-        function renderTimes() {
-            const container = document.getElementById('time-grid');
-            container.innerHTML = "";
-            timeSlots.forEach(t => {
-                container.innerHTML += `<button class="time-btn" onclick="selectTime('${t}', this)">${t}</button>`;
-            });
-        }
-        function selectTime(t, btn) {
-            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
+
         function prevMonth() { currentDate.setMonth(currentDate.getMonth()-1); renderCalendar(); }
         function nextMonth() { currentDate.setMonth(currentDate.getMonth()+1); renderCalendar(); }
 
         window.onload = function() { renderCalendar(); };
-        
-        // 後台入口 (密碼 8888)
-        function openAdmin() {
-            const pwd = prompt("請輸入管理密碼：");
-            if(pwd === "8888") { Swal.fire('登入成功', '進入後台管理系統', 'success'); }
-        }
     </script>
 </body>
 </html>
